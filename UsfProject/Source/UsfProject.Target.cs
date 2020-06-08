@@ -10,5 +10,6 @@ public class UsfProjectTarget : TargetRules
 		Type = TargetType.Game;
 
 		ExtraModuleNames.AddRange( new string[] { "UsfProject" } );
+		ExtraModuleNames.AddRange(new string[] { "ShaderModule" });
 	}
 }

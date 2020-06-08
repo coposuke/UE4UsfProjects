@@ -10,5 +10,6 @@ public class UsfProjectEditorTarget : TargetRules
 		Type = TargetType.Editor;
 
 		ExtraModuleNames.AddRange( new string[] { "UsfProject" } );
+		ExtraModuleNames.AddRange(new string[] { "ShaderModule" });
 	}
 }

@@ -6,7 +6,7 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class USFPROJECT_API USketchComponent : public UActorComponent
+class SHADERMODULE_API USketchComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

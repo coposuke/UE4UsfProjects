@@ -7,10 +7,12 @@
 		{
 			"Name": "UsfProject",
 			"Type": "Runtime",
-			"LoadingPhase": "PostConfigInit",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "ShaderModule",
+			"Type": "Runtime",
+			"LoadingPhase": "PostConfigInit"
 		}
 	]
 }

@@ -2,14 +2,13 @@
 
 using UnrealBuildTool;
 
-public class UsfProject : ModuleRules
+public class ShaderModule : ModuleRules
 {
-	public UsfProject(ReadOnlyTargetRules Target) : base(Target)
+	public ShaderModule(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
-		PublicDependencyModuleNames.AddRange(new string[] { "ShaderModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RenderCore", "RHI", });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
