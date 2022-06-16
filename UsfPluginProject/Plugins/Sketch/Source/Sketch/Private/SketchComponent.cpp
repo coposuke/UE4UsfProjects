@@ -58,18 +58,18 @@ void USketchComponent::ExecuteInRenderThread(FRHICommandListImmediate& RHICmdLis
     RHICmdList.ApplyCachedRenderTargets(PSOInitializer);
 	PSOInitializer.PrimitiveType = PT_TriangleList;
     PSOInitializer.BoundShaderState.VertexDeclarationRHI = VertexDec.VertexDeclarationRHI;
-	PSOInitializer.BoundShaderState.VertexShaderRHI = GETSAFERHISHADER_VERTEX(*shaderVS);
-    PSOInitializer.BoundShaderState.PixelShaderRHI = GETSAFERHISHADER_PIXEL(*shaderPS);
+	PSOInitializer.BoundShaderState.VertexShaderRHI = shaderVS.GetVertexShader();
+	PSOInitializer.BoundShaderState.PixelShaderRHI = shaderPS.GetPixelShader();
 	PSOInitializer.RasterizerState = TStaticRasterizerState<FM_Solid, CM_None>::GetRHI();
 	PSOInitializer.BlendState = TStaticBlendState<>::GetRHI();
 	PSOInitializer.DepthStencilState = TStaticDepthStencilState<false, CF_Always>::GetRHI();
-	SetGraphicsPipelineState(RHICmdList, PSOInitializer);
+	SetGraphicsPipelineState(RHICmdList, PSOInitializer, 0);
 
 	static const FSketchVertex Vertices[4] = {
-		{ FVector4(-1.0f,  1.0f, 0.0f, 1.0f), FVector2D(0.0f, 0.0f)},
-		{ FVector4( 1.0f,  1.0f, 0.0f, 1.0f), FVector2D(1.0f, 0.0f)},
-		{ FVector4(-1.0f, -1.0f, 0.0f, 1.0f), FVector2D(0.0f, 1.0f)},
-		{ FVector4( 1.0f, -1.0f, 0.0f, 1.0f), FVector2D(1.0f, 1.0f)},
+		{ FVector4f(-1.0f,  1.0f, 0.0f, 1.0f), FVector2f(0.0f, 0.0f)},
+		{ FVector4f( 1.0f,  1.0f, 0.0f, 1.0f), FVector2f(1.0f, 0.0f)},
+		{ FVector4f(-1.0f, -1.0f, 0.0f, 1.0f), FVector2f(0.0f, 1.0f)},
+		{ FVector4f( 1.0f, -1.0f, 0.0f, 1.0f), FVector2f(1.0f, 1.0f)},
 	};
 	
 	static const uint16 Indices[6] =
@@ -78,8 +78,7 @@ void USketchComponent::ExecuteInRenderThread(FRHICommandListImmediate& RHICmdLis
 		2, 1, 3
 	};
 
-	DrawIndexedPrimitiveUP(RHICmdList, PT_TriangleList, 0, ARRAY_COUNT(Vertices), 2, Indices, sizeof(Indices[0]), Vertices, sizeof(Vertices[0]));
-
+	DrawIndexedPrimitiveUP(RHICmdList, PT_TriangleList, 0, UE_ARRAY_COUNT(Vertices), 2, Indices, sizeof(Indices[0]), Vertices, sizeof(Vertices[0]));
     // Resolve render target.  
     RHICmdList.CopyToResolveTarget(  
         OutputRenderTargetResource->GetRenderTargetTexture(),  
@@ -102,16 +101,16 @@ void USketchComponent::DrawIndexedPrimitiveUP(
 {
 	const uint32 NumIndices = GetVertexCountForPrimitiveCount( NumPrimitives, PrimitiveType );
 
-	FRHIResourceCreateInfo CreateInfo;
-	FVertexBufferRHIRef VertexBufferRHI = RHICreateVertexBuffer(VertexDataStride * NumVertices, BUF_Volatile, CreateInfo);
-	void* VoidPtr = RHILockVertexBuffer(VertexBufferRHI, 0, VertexDataStride * NumVertices, RLM_WriteOnly);
+	FRHIResourceCreateInfo CreateInfo(TEXT("FRHIResourceCreateInfo"));
+	FBufferRHIRef VertexBufferRHI = RHICreateVertexBuffer(VertexDataStride * NumVertices, BUF_Volatile, CreateInfo);
+	void* VoidPtr = RHILockBuffer(VertexBufferRHI, 0, VertexDataStride * NumVertices, RLM_WriteOnly);
 	FPlatformMemory::Memcpy(VoidPtr, VertexData, VertexDataStride * NumVertices);
-	RHIUnlockVertexBuffer(VertexBufferRHI);
+	RHIUnlockBuffer(VertexBufferRHI);
 
-	FIndexBufferRHIRef IndexBufferRHI = RHICreateIndexBuffer(IndexDataStride, IndexDataStride * NumIndices, BUF_Volatile, CreateInfo);
-	void* VoidPtr2 = RHILockIndexBuffer(IndexBufferRHI, 0, IndexDataStride * NumIndices, RLM_WriteOnly);
+	FBufferRHIRef IndexBufferRHI = RHICreateIndexBuffer(IndexDataStride, IndexDataStride * NumIndices, BUF_Volatile, CreateInfo);
+	void* VoidPtr2 = RHILockBuffer(IndexBufferRHI, 0, IndexDataStride * NumIndices, RLM_WriteOnly);
 	FPlatformMemory::Memcpy(VoidPtr2, IndexData, IndexDataStride * NumIndices);
-	RHIUnlockIndexBuffer(IndexBufferRHI);
+	RHIUnlockBuffer(IndexBufferRHI);
 
 	RHICmdList.SetStreamSource(0, VertexBufferRHI, 0);
 	RHICmdList.DrawIndexedPrimitive(IndexBufferRHI, MinVertexIndex, 0, NumVertices, 0, NumPrimitives, 1);

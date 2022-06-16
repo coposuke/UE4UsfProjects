@@ -1,4 +1,5 @@
 #include "SketchShader.h"
+#include <Runtime/RenderCore/Public/ShaderCompilerCore.h>
 
 
 FSketchShaderVS::FSketchShaderVS(const ShaderMetaType::CompiledShaderInitializerType& Initializer)
@@ -12,13 +13,6 @@ void FSketchShaderVS::ModifyCompilationEnvironment(const FGlobalShaderPermutatio
 	OutEnvironment.CompilerFlags.Add(CFLAG_StandardOptimization);
 }
 
-bool FSketchShaderVS::Serialize(FArchive& Ar)
-{
-    return FGlobalShader::Serialize(Ar);
-}
-
-
-
 FSketchShaderPS::FSketchShaderPS(const ShaderMetaType::CompiledShaderInitializerType& Initializer)
 	: FGlobalShader(Initializer)
 {
@@ -28,11 +22,6 @@ void FSketchShaderPS::ModifyCompilationEnvironment(const FGlobalShaderPermutatio
 {
 	FGlobalShader::ModifyCompilationEnvironment(Parameters, OutEnvironment);
 	OutEnvironment.CompilerFlags.Add(CFLAG_StandardOptimization);
-}
-
-bool FSketchShaderPS::Serialize(FArchive& Ar)
-{
-    return FGlobalShader::Serialize(Ar);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

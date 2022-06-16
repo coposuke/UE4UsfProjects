@@ -7,7 +7,7 @@
 
 void FSketchModule::StartupModule()
 {
-#if (ENGINE_MINOR_VERSION >= 21)
+#if (ENGINE_MINOR_VERSION >= 21 || ENGINE_MAJOR_VERSION >= 5)
     FString PluginDirectory = IPluginManager::Get().FindPlugin(TEXT("Sketch"))->GetBaseDir();
     if(!AllShaderSourceDirectoryMappings().Contains("/Plugins/Sketch"))
         AddShaderSourceDirectoryMapping("/Plugins/Sketch", PluginDirectory);

@@ -12,10 +12,9 @@ public:
 	FSketchShaderVS() {}
 	explicit FSketchShaderVS(const ShaderMetaType::CompiledShaderInitializerType& Initializer);
 
-	static bool ShouldCache(EShaderPlatform Platform) { return IsFeatureLevelSupported(Platform, ERHIFeatureLevel::ES2); }
+	static bool ShouldCache(EShaderPlatform Platform) { return IsFeatureLevelSupported(Platform, ERHIFeatureLevel::ES3_1); }
 	static bool ShouldCompilePermutation(const FGlobalShaderPermutationParameters& PermutationParams) { return true; }
 	static void ModifyCompilationEnvironment(const FGlobalShaderPermutationParameters& Parameters, FShaderCompilerEnvironment& OutEnvironment);
-	virtual bool Serialize(FArchive& Ar) override;
 };
 
 
@@ -27,16 +26,15 @@ public:
 	FSketchShaderPS() {}
 	explicit FSketchShaderPS(const ShaderMetaType::CompiledShaderInitializerType& Initializer);
 
-	static bool ShouldCache(EShaderPlatform Platform) { return IsFeatureLevelSupported(Platform, ERHIFeatureLevel::ES2); }
+	static bool ShouldCache(EShaderPlatform Platform) { return IsFeatureLevelSupported(Platform, ERHIFeatureLevel::ES3_1); }
 	static bool ShouldCompilePermutation(const FGlobalShaderPermutationParameters& PermutationParams) { return true; }
 	static void ModifyCompilationEnvironment(const FGlobalShaderPermutationParameters& Parameters, FShaderCompilerEnvironment& OutEnvironment);
-	virtual bool Serialize(FArchive& Ar) override;
 };
 
 struct FSketchVertex
 {
-    FVector4    Position;
-    FVector2D   UV;
+    FVector4f    Position;
+    FVector2f   UV;
 };
 
 class FSketchVertexDeclaration : public FRenderResource
