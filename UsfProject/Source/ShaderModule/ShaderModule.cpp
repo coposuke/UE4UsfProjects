@@ -5,7 +5,7 @@
 
 void FShaderModule::StartupModule()
 {
-#if (ENGINE_MINOR_VERSION >= 21)    
+#if (ENGINE_MINOR_VERSION >= 21 || ENGINE_MAJOR_VERSION >= 5)    
     FString ShaderDirectory = FPaths::Combine(FPaths::ProjectDir(), TEXT("Shader"));
     if(!AllShaderSourceDirectoryMappings().Contains("/Project"))
         AddShaderSourceDirectoryMapping("/Project", ShaderDirectory);
